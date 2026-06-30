@@ -1,353 +1,326 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Heartory | Every Gift Tells a Story</title>
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <link rel="stylesheet" href="styles.css?v=7">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Digital ID Card</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#FAFAF7;
+    --ink:#16181D;
+    --ink-soft:#5B5E66;
+    --accent:#B8935F;
+    --accent-soft:#E9DCC8;
+    --hairline:#E4E1D8;
+    --card-w:380px;
+  }
+
+  *{ box-sizing:border-box; }
+
+  body{
+    margin:0;
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:var(--bg);
+    background-image:
+      radial-gradient(circle at 1px 1px, rgba(22,24,29,0.05) 1px, transparent 0);
+    background-size: 22px 22px;
+    font-family:'Inter', sans-serif;
+    color:var(--ink);
+    padding:32px 16px;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation:none !important; transition:none !important; }
+  }
+
+  .card{
+    position:relative;
+    width:var(--card-w);
+    max-width:100%;
+    background:#FFFFFF;
+    border-radius:18px;
+    box-shadow:0 1px 2px rgba(22,24,29,0.04), 0 24px 48px -16px rgba(22,24,29,0.18);
+    overflow:hidden;
+    padding:36px 30px 28px 38px;
+    opacity:0;
+    transform:translateY(18px) rotateX(6deg);
+    transform-origin:top center;
+    animation:cardIn 0.7s cubic-bezier(.2,.7,.3,1) 0.05s forwards;
+  }
+
+  @keyframes cardIn{
+    to{ opacity:1; transform:translateY(0) rotateX(0deg); }
+  }
+
+  .stripe{
+    position:absolute;
+    left:0; top:0; bottom:0;
+    width:6px;
+    background:linear-gradient(180deg, var(--accent) 0%, var(--accent-soft) 100%);
+  }
+
+  .top-row{
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    margin-bottom:22px;
+    opacity:0;
+    animation:fadeUp 0.6s ease 0.25s forwards;
+  }
+
+  .org{
+    font-size:11px;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+    font-weight:500;
+  }
+  .org strong{
+    display:block;
+    font-family:'Space Grotesk', sans-serif;
+    font-size:14px;
+    letter-spacing:0;
+    text-transform:none;
+    color:var(--ink);
+    margin-top:2px;
+  }
+
+  .id-tag{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10px;
+    color:var(--accent);
+    text-align:right;
+    line-height:1.5;
+  }
+  .id-tag span{ display:block; color:var(--ink-soft); font-size:9px; letter-spacing:0.08em; }
+
+  .photo-wrap{
+    width:96px; height:96px;
+    border-radius:14px;
+    overflow:hidden;
+    margin-bottom:18px;
+    box-shadow:0 8px 20px -8px rgba(22,24,29,0.35);
+    opacity:0;
+    transform:scale(0.85);
+    animation:photoIn 0.6s cubic-bezier(.2,.8,.3,1) 0.35s forwards;
+  }
+  @keyframes photoIn{ to{ opacity:1; transform:scale(1); } }
+
+  .photo-wrap img{ width:100%; height:100%; object-fit:cover; display:block; }
+
+  .name{
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:700;
+    font-size:30px;
+    line-height:1.08;
+    letter-spacing:-0.01em;
+    margin:0 0 6px 0;
+    opacity:0;
+    transform:translateY(10px);
+    animation:fadeUp 0.6s ease 0.45s forwards;
+  }
+
+  .role{
+    font-size:13.5px;
+    color:var(--ink-soft);
+    margin:0 0 20px 0;
+    opacity:0;
+    transform:translateY(10px);
+    animation:fadeUp 0.6s ease 0.52s forwards;
+  }
+  .role strong{ color:var(--ink); font-weight:600; }
+
+  .divider{
+    height:1px;
+    background:var(--hairline);
+    margin:0 0 18px 0;
+    transform:scaleX(0);
+    transform-origin:left;
+    animation:lineIn 0.7s ease 0.6s forwards;
+  }
+  @keyframes lineIn{ to{ transform:scaleX(1); } }
+
+  @keyframes fadeUp{ to{ opacity:1; transform:translateY(0); } }
+
+  .links{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+  }
+
+  .link{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:13px 14px;
+    border-radius:10px;
+    text-decoration:none;
+    color:var(--ink);
+    background:var(--bg);
+    border:1px solid var(--hairline);
+    opacity:0;
+    transform:translateY(10px);
+    animation:fadeUp 0.5s ease forwards;
+    transition: transform 0.25s cubic-bezier(.2,.8,.3,1), box-shadow 0.25s ease, border-color 0.25s ease;
+  }
+  .link:nth-child(1){ animation-delay:0.68s; }
+  .link:nth-child(2){ animation-delay:0.75s; }
+  .link:nth-child(3){ animation-delay:0.82s; }
+
+  .link:hover, .link:active{
+    transform:translateY(-2px) rotateX(4deg);
+    box-shadow:0 10px 22px -12px rgba(22,24,29,0.3);
+    border-color:var(--accent);
+  }
+
+  .link-left{
+    display:flex;
+    align-items:center;
+    gap:11px;
+  }
+
+  .icon{
+    width:30px; height:30px;
+    border-radius:8px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:#fff;
+    border:1px solid var(--hairline);
+    flex-shrink:0;
+  }
+  .icon svg{ width:15px; height:15px; }
+
+  .link-text{ display:flex; flex-direction:column; }
+  .link-label{ font-size:9.5px; text-transform:uppercase; letter-spacing:0.08em; color:var(--ink-soft); }
+  .link-value{ font-size:13px; font-weight:500; }
+
+  .arrow{ color:var(--ink-soft); font-size:14px; transition:transform 0.25s ease; }
+  .link:hover .arrow{ transform:translate(2px,-2px); color:var(--accent); }
+
+  .footer-note{
+    text-align:center;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:9.5px;
+    letter-spacing:0.08em;
+    color:var(--ink-soft);
+    margin-top:22px;
+    opacity:0;
+    animation:fadeUp 0.5s ease 0.95s forwards;
+  }
+</style>
 </head>
 <body>
 
-    <div id="loader" class="loader-overlay">
-        <div class="loader-content">
-            <h1 class="loader-brand">Heartory</h1>
-            <div class="progress-bar"><div class="progress-fill"></div></div>
-            <p>Crafting your story...</p>
-        </div>
+<div class="card" id="card">
+  <div class="stripe"></div>
+
+  <div class="top-row">
+    <div class="org">
+      Org Name
+      <strong id="orgFull">Computer Science</strong>
     </div>
-
-    <header class="navbar">
-        <div class="nav-container">
-            <div class="logo">
-                <i class="fa-solid fa-heart" style="color: var(--accent-pink); font-size: 1.2rem; margin-right: 8px;"></i>
-                Heartory
-            </div>
-            <nav class="nav-links">
-                <a href="#home">Home</a>
-                <a href="#experience">The Experience</a>
-                <a href="#contact">Contact</a>
-            </nav>
-            <button class="btn-outline mobile-hide">Track Order</button>
-        </div>
-    </header>
-
-    <section class="hero" id="home">
-        <div class="hero-bg-shapes">
-            <div class="shape shape-1"></div>
-            <div class="shape shape-2"></div>
-        </div>
-        <div class="hero-content reveal">
-            <span class="badge">Premium Indian Gifting</span>
-            <h1>Every gift tells a <span class="text-italic">story</span>.</h1>
-            <p>We don’t just send gifts, we deliver emotions. Craft a beautifully personalized experience, or send us your own special item to be packaged with unparalleled luxury.</p>
-        </div>
-    </section>
-
-    <div class="trust-banner reveal">
-        <div class="trust-item"><i class="fa-solid fa-truck-fast"></i> Pan-India Delivery</div>
-        <div class="trust-item"><i class="fa-solid fa-gem"></i> Premium Packaging</div>
-        <div class="trust-item"><i class="fa-solid fa-feather"></i> Handwritten Notes</div>
+    <div class="id-tag">
+      <span>ID No.</span>
+      <span id="idNum">CS-0001</span>
     </div>
+  </div>
 
-    <main class="container layout-grid" id="experience">
-        
-        <div class="form-sections">
-            
-            <div class="mode-toggle-wrapper reveal">
-                <button class="mode-toggle active" id="btnMode1" onclick="app.setMode('boxes')">
-                    <i class="fa-solid fa-box-open"></i> Curated Gift Boxes
-                </button>
-                <button class="mode-toggle" id="btnMode2" onclick="app.setMode('personal')">
-                    <i class="fa-solid fa-hand-holding-heart"></i> Send Your Own Gift
-                </button>
-            </div>
+  <div class="photo-wrap">
+    <img id="photo" src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?w=300&h=300&fit=crop" alt="Profile photo">
+  </div>
 
-            <section class="card-section reveal" id="sectionBoxes">
-                <div class="step-indicator">Step 01</div>
-                <h2 class="section-title">Choose Your Canvas</h2>
-                <p class="section-subtitle">Select the foundation of your story.</p>
-                
-                <div class="options-grid box-grid">
-                    <div class="option-card active" id="box-basic" onclick="app.selectBase('basic')">
-                        <div class="card-header">
-                            <i class="fa-solid fa-box card-icon"></i>
-                            <h4>Basic Box</h4>
-                            <p class="tagline">Budget Gift</p>
-                        </div>
-                        <ul class="box-contents">
-                            <li>💌 1–2 page letter</li>
-                            <li>✉️ Envelope</li>
-                            <li>🍫 1 small chocolate</li>
-                            <li>🎀 Basic wrapping</li>
-                        </ul>
-                        <p class="box-insight">💡 Small but feels special.</p>
-                        <p class="price">₹199</p>
-                    </div>
+  <h1 class="name" id="name">Anshif TK</h1>
+  <p class="role">Media Lead · <strong id="period">2024–2028</strong></p>
 
-                    <div class="option-card popular-card" id="box-premium" onclick="app.selectBase('premium')">
-                        <div class="popular-badge">Main Seller</div>
-                        <div class="card-header">
-                            <i class="fa-solid fa-gift card-icon"></i>
-                            <h4>Premium Box</h4>
-                            <p class="tagline">Balanced Gift + Emotion</p>
-                        </div>
-                        <ul class="box-contents">
-                            <li>💌 3–5 pg handwritten letter</li>
-                            <li>✉️ Premium envelope</li>
-                            <li>🍫 2 chocolates</li>
-                            <li>🖼️ 1 photo</li>
-                            <li>🎀 Premium wrapping</li>
-                        </ul>
-                        <p class="box-insight">💡 This is where people feel value.</p>
-                        <p class="price">₹399</p>
-                    </div>
+  <div class="divider"></div>
 
-                    <div class="option-card" id="box-luxury" onclick="app.selectBase('luxury')">
-                        <div class="card-header">
-                            <i class="fa-solid fa-crown card-icon"></i>
-                            <h4>Luxury Box</h4>
-                            <p class="tagline">High Impact Experience</p>
-                        </div>
-                        <ul class="box-contents">
-                            <li>💌 6–10 pg handwritten letter</li>
-                            <li>✉️ Luxury envelopes</li>
-                            <li>🍫 3–4 chocolates / small gifts</li>
-                            <li>🖼️ Multiple photos</li>
-                            <li>🕯️ Wax seal</li>
-                            <li>🎁 Premium aesthetic box</li>
-                        </ul>
-                        <p class="box-insight">💡 A real surprise gift.</p>
-                        <p class="price">₹699</p>
-                    </div>
-                </div>
-            </section>
+  <div class="links">
+    <a class="link" id="linkMail" href="mailto:hello@example.com">
+      <div class="link-left">
+        <span class="icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#16181D" stroke-width="2"><path d="M4 4h16v16H4z" stroke="none"/><path d="M22 6 12 13 2 6"/><path d="M2 6h20v12H2z"/></svg>
+        </span>
+        <span class="link-text">
+          <span class="link-label">Mail</span>
+          <span class="link-value" id="mailValue">hello@example.com</span>
+        </span>
+      </div>
+      <span class="arrow">↗</span>
+    </a>
 
-            <section class="card-section hidden" id="sectionPersonal">
-                <div class="step-indicator">Step 01</div>
-                <h2 class="section-title">Your Item, Our Art</h2>
-                <p class="section-subtitle">Courier your personal gift to us. We will professionally package and deliver it.</p>
-                
-                <div class="input-group">
-                    <label for="personalItemDesc">What treasure are you sending us?</label>
-                    <input type="text" id="personalItemDesc" placeholder="e.g., A vintage watch and a bottle of Dior">
-                </div>
-                <div class="input-group">
-                    <label for="personalItemInst">Any specific curating instructions?</label>
-                    <textarea id="personalItemInst" placeholder="e.g., Please place dried lavender next to the watch..."></textarea>
-                </div>
+    <a class="link" id="linkInsta" href="https://instagram.com/" target="_blank" rel="noopener">
+      <div class="link-left">
+        <span class="icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#16181D" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="#16181D" stroke="none"/></svg>
+        </span>
+        <span class="link-text">
+          <span class="link-label">Instagram</span>
+          <span class="link-value" id="instaValue">@username</span>
+        </span>
+      </div>
+      <span class="arrow">↗</span>
+    </a>
 
-                <h3 class="subsection-title" style="margin-top:2rem;">Select Presentation Tier</h3>
-                <div class="options-grid">
-                    <div class="option-card active" id="pack-basic" onclick="app.selectBase('basic')">
-                        <i class="fa-solid fa-box card-icon"></i>
-                        <h4>Classic Packing</h4>
-                        <p class="price">₹99</p>
-                    </div>
-                    <div class="option-card" id="pack-premium" onclick="app.selectBase('premium')">
-                        <i class="fa-solid fa-gift card-icon"></i>
-                        <h4>Aesthetic Packing</h4>
-                        <p class="price">₹199</p>
-                    </div>
-                    <div class="option-card" id="pack-luxury" onclick="app.selectBase('luxury')">
-                        <i class="fa-solid fa-crown card-icon"></i>
-                        <h4>Luxury Presentation</h4>
-                        <p class="price">₹349</p>
-                    </div>
-                </div>
-            </section>
+    <a class="link" id="linkTelegram" href="https://t.me/" target="_blank" rel="noopener">
+      <div class="link-left">
+        <span class="icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#16181D" stroke-width="2"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4 20-7Z"/></svg>
+        </span>
+        <span class="link-text">
+          <span class="link-label">Telegram</span>
+          <span class="link-value" id="telegramValue">@username</span>
+        </span>
+      </div>
+      <span class="arrow">↗</span>
+    </a>
+  </div>
 
-            <section class="card-section reveal">
-                <div class="step-indicator">Step 02</div>
-                <h2 class="section-title">Customize Your Story</h2>
-                <p class="section-subtitle">Type your letters below. (Adjust pages to match your box limits or upgrade!)</p>
-                
-                <div class="flex-row">
-                    <div class="input-group width-auto">
-                        <label for="pageCount">Number of Pages</label>
-                        <input type="number" id="pageCount" min="1" max="15" value="1" onchange="app.updatePages()">
-                    </div>
-                    <div class="info-text">
-                        <i class="fa-solid fa-circle-info"></i> 1-2 pgs: Free | 3-5: ₹80 | 6-10: ₹180 | 11-15: ₹350
-                    </div>
-                </div>
+  <div class="footer-note">DIGITAL CREDENTIAL · VERIFIED</div>
+</div>
 
-                <div class="options-grid">
-                    <div class="option-card active" id="letter-printed" onclick="app.selectLetterType('printed')">
-                        <i class="fa-solid fa-print card-icon"></i>
-                        <h4>Classic Print</h4>
-                        <p class="price">Included</p>
-                    </div>
-                    <div class="option-card" id="letter-handwritten" onclick="app.selectLetterType('handwritten')">
-                        <i class="fa-solid fa-pen-nib card-icon"></i>
-                        <h4>Artisan Handwritten</h4>
-                        <p class="price">+₹120</p>
-                    </div>
-                </div>
+<script>
+  // ============================================
+  // EDIT THIS BLOCK FOR EACH TEAM MEMBER
+  // ============================================
+  const CONFIG = {
+    orgLine: "Start-up name",
+    orgFull: "The Mrinmoybabu's startup",
+    idNumber: "Not yet",
+    photoUrl: "https://images.unsplash.com/photo-1633332755192-727a05c4013d?w=300&h=300&fit=crop",
+    name: "Emon Das",
+    role: "Marketing and finding clients",
+    period: "2026–Present",
+    mail: "anirudhdas6969@gmail.com",
+    instagramHandle: "introvert_.emonnn_",
+    instagramUrl: "https://instagram.com/introvert_.emonnn_",
+    telegramHandle: "not yet",
+    telegramUrl: "https://t.me/username"
+  };
+  // ============================================
 
-                <div class="tabs-container">
-                    <div class="tabs-header" id="tabsHeader"></div>
-                    <div class="tabs-body" id="tabsBody"></div>
-                </div>
-            </section>
+  document.querySelector('.org').childNodes[0].textContent = CONFIG.orgLine;
+  document.getElementById('orgFull').textContent = CONFIG.orgFull;
+  document.getElementById('idNum').textContent = CONFIG.idNumber;
+  document.getElementById('photo').src = CONFIG.photoUrl;
+  document.getElementById('name').textContent = CONFIG.name;
+  document.querySelector('.role').childNodes[0].textContent = CONFIG.role + " · ";
+  document.getElementById('period').textContent = CONFIG.period;
 
-            <section class="card-section reveal">
-                <div class="step-indicator">Step 03</div>
-                <h2 class="section-title">Elevate the Experience</h2>
-                <p class="section-subtitle">Add extra surprises to make it unforgettable.</p>
-                
-                <div class="options-grid add-ons-grid">
-                    <div class="option-card addon-card" id="addon-perfume" onclick="app.toggleAddon('perfume')">
-                        <i class="fa-solid fa-spray-can-sparkles card-icon"></i>
-                        <h4>Luxury Perfume</h4>
-                        <p class="price">+₹499</p>
-                    </div>
-                    <div class="option-card addon-card" id="addon-customGift" onclick="app.toggleAddon('customGift')">
-                        <i class="fa-solid fa-wand-magic-sparkles card-icon"></i>
-                        <h4>Custom Mini-Gift</h4>
-                        <p class="price">+₹299</p>
-                    </div>
-                    <div class="option-card addon-card" id="addon-extraChoco" onclick="app.toggleAddon('extraChoco')">
-                        <i class="fa-solid fa-cookie-bite card-icon"></i>
-                        <h4>Extra Chocolates</h4>
-                        <p class="price">+₹99</p>
-                    </div>
-                    <div class="option-card addon-card" id="addon-photo" onclick="app.toggleAddon('photo')">
-                        <i class="fa-solid fa-camera-retro card-icon"></i>
-                        <h4>Extra Polaroid</h4>
-                        <p class="price">+₹30</p>
-                    </div>
-                </div>
-            </section>
+  document.getElementById('linkMail').href = "mailto:" + CONFIG.mail;
+  document.getElementById('mailValue').textContent = CONFIG.mail;
 
-            <section class="card-section reveal" style="margin-bottom: 0;">
-                <div class="step-indicator">Step 04</div>
-                <h2 class="section-title">Where Does the Story Go?</h2>
-                
-                <div class="delivery-toggles">
-                    <label class="custom-radio">
-                        <input type="radio" name="deliveryMode" value="self" onchange="app.setDeliveryMode('self')"> 
-                        <span class="radio-btn"></span>
-                        Send to Me
-                    </label>
-                    <label class="custom-radio">
-                        <input type="radio" name="deliveryMode" value="someone" checked onchange="app.setDeliveryMode('someone')"> 
-                        <span class="radio-btn"></span>
-                        Send to a Loved One
-                    </label>
-                </div>
+  document.getElementById('linkInsta').href = CONFIG.instagramUrl;
+  document.getElementById('instaValue').textContent = "@" + CONFIG.instagramHandle;
 
-                <div class="input-group">
-                    <label for="recName" id="lblRecName">Recipient Name</label>
-                    <input type="text" id="recName" placeholder="Enter full name">
-                </div>
-                <div class="input-group">
-                    <label for="recPhone" id="lblRecPhone">Recipient Phone</label>
-                    <input type="tel" id="recPhone" placeholder="10-digit mobile number">
-                </div>
-                <div class="input-group">
-                    <label for="recAddress" id="lblRecAddress">Delivery Address</label>
-                    <textarea id="recAddress" placeholder="House/Flat No, Street, Landmark, City, Pincode" rows="3"></textarea>
-                </div>
-            </section>
+  document.getElementById('linkTelegram').href = CONFIG.telegramUrl;
+  document.getElementById('telegramValue').textContent = "@" + CONFIG.telegramHandle;
+</script>
 
-        </div>
-
-        <aside class="summary-wrapper">
-            <div class="summary-card receipt-style">
-                <div class="receipt-header">
-                    <h3>Your Story</h3>
-                    <p>Order Summary</p>
-                </div>
-                
-                <div class="receipt-body">
-                    <div class="summary-row">
-                        <span id="sumBaseLabel" class="item-name">Classic Box</span>
-                        <span id="sumBasePrice" class="item-price">₹199</span>
-                    </div>
-                    
-                    <div class="summary-row">
-                        <span id="sumPagesLabel" class="item-name">1 Page (Printed)</span>
-                        <span id="sumPagesPrice" class="item-price">₹0</span>
-                    </div>
-
-                    <div class="summary-row" id="sumAddonRow">
-                        <span class="item-name">Upgrades</span>
-                        <span id="sumAddonPrice" class="item-price">₹0</span>
-                    </div>
-
-                    <div class="summary-row">
-                        <span class="item-name">Pan-India Courier</span>
-                        <span class="item-price">₹99</span>
-                    </div>
-                </div>
-
-                <div class="receipt-footer">
-                    <div class="summary-row total-row">
-                        <span>Grand Total</span>
-                        <span id="sumTotal">₹298</span>
-                    </div>
-                </div>
-
-                <button id="orderBtn" type="button" class="btn-primary insta-btn" onclick="app.checkoutInstagram()">
-                    <i class="fa-brands fa-instagram" style="font-size: 1.3rem;"></i> Order via Instagram DM
-                </button>
-                
-                <p class="secure-text"><i class="fa-solid fa-lock"></i> 100% Secure Checkout • Heartory Guarantee</p>
-            </div>
-        </aside>
-
-    </main>
-
-    <section class="contact-section reveal" id="contact">
-        <div class="container">
-            <h2 class="section-title" style="text-align: center;">Get In Touch</h2>
-            <p class="section-subtitle" style="text-align: center;">Have a special request or bulk order? Reach out directly.</p>
-            
-            <div class="contact-grid" style="display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap;">
-                <a href="https://instagram.com/heartorygifts" target="_blank" class="contact-card insta" style="flex: 1; max-width: 350px;">
-                    <div class="contact-icon"><i class="fa-brands fa-instagram"></i></div>
-                    <h3>Instagram</h3>
-                    <p>@heartorygifts</p>
-                    <span>DM us for inspiration & orders</span>
-                </a>
-                
-                <a href="mailto:heartorygifts@gmail.com" class="contact-card email" style="flex: 1; max-width: 350px;">
-                    <div class="contact-icon"><i class="fa-regular fa-envelope"></i></div>
-                    <h3>Email Us</h3>
-                    <p>heartorygifts@gmail.com</p>
-                    <span>For partnerships & bulk queries</span>
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <footer class="footer">
-        <div class="footer-content">
-            <h2 class="footer-logo">Heartory</h2>
-            <p>Every gift tells a story.</p>
-            <p class="copyright">© 2026 Heartory Gifting Co. All rights reserved.</p>
-        </div>
-    </footer>
-
-    <script src="script.js?v=7"></script>
-
-    <script>
-        window.addEventListener('load', function() {
-            setTimeout(function() {
-                var loader = document.getElementById('loader');
-                if (loader) {
-                    loader.style.opacity = '0';
-                    setTimeout(function() { loader.style.display = 'none'; }, 500);
-                }
-            }, 1500);
-        });
-    </script>
 </body>
 </html>
